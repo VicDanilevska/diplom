@@ -1,6 +1,12 @@
 import React from 'react';
 import {AnimatePresence} from "framer-motion";
 import {Route, Routes, useLocation} from "react-router-dom";
+import Home from "../pages/Home";
+import LogIn from "../pages/LogIn";
+import SignUp from "../pages/SignUp";
+import Account from "../pages/Account";
+import List from "../pages/List";
+import Edit from "../pages/Edit";
 
 const AnimRoutes = () => {
 
