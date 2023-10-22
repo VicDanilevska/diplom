@@ -1,10 +1,22 @@
 import React from 'react';
+import {motion} from "framer-motion";
+import {Link} from "react-router-dom";
 
 const Home = () => {
     return (
-        <div>
-            
-        </div>
+        <section className={''}>
+            <div className={''}>
+                <img src="" alt="" className={''}/>
+                <p className={''}></p>
+                <div className={''}></div>
+            </div>
+
+            <div className={''}>
+                <img src="" alt="" className={''}/>
+                <p className={''}></p>
+                <div className={''}></div>
+            </div>
+        </section>
     );
 };
 
