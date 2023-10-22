@@ -18,13 +18,14 @@ const Home = () => {
                 </motion.div>
             </motion.div>
 
-            <motion.div className={''}>
-                <motion.img src={HomeAuthorImageUrl} alt="" className={''}/>
-                <motion.p className={''}>
+            <motion.div className={'h-full flex flex-col items-center bg-blue-500'}>
+                <motion.img src={HomeAuthorImageUrl} alt="" className={'max-w-[60%] mt-20'}/>
+                <motion.p className={'text-2xl text-white font-semibold text-center rounded-s shadow-md shadow-white max-w-[70%] px-4 py-2'}>
                     Ти бажаєш зарекомедувати себе або свою компанію як професіонала у своїй сфері
                 </motion.p>
-                <motion.div className={''}></motion.div>
-                <Link to={'/login'}>Я - автор !</Link>
+                <motion.div className={'mt-auto mb-10'}>
+                    <Link to={'/login'} className={'text-5xl block text-white  py-5 w-fit px-10  border border-white py-5 text-center hover:bg-white hover:text-black transition duration-200 ease-linear'}>Я - автор !</Link>
+                </motion.div>
             </motion.div>
         </section>
     );
