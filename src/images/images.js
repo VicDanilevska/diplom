@@ -1,0 +1,4 @@
+const HomeAuthorImageUrl = 'https://firebasestorage.googleapis.com/v0/b/my-diplom-10e3f.appspot.com/o/CommonFiles%2Fauthor.png?alt=media&token=70d6b891-456d-4f16-90a9-8a96392de389&_gl=1*1gz7kdn*_ga*MTE1MDIyNjY4OC4xNjk2ODc1MjQy*_ga_CW55HF8NVT*MTY5Nzk2NTQ1NS45LjEuMTY5Nzk2NTU3NS4zLjAuMA..';
+const HomeGuestImageUrl = 'https://firebasestorage.googleapis.com/v0/b/my-diplom-10e3f.appspot.com/o/CommonFiles%2Fguest.png?alt=media&token=1a7f21ac-c3d6-4ec3-95ca-af7aadade524&_gl=1*m7lv3w*_ga*MTE1MDIyNjY4OC4xNjk2ODc1MjQy*_ga_CW55HF8NVT*MTY5Nzk2NTQ1NS45LjEuMTY5Nzk2NTY0OS41MS4wLjA.';
+
+export {HomeAuthorImageUrl, HomeGuestImageUrl};
