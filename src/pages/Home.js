@@ -58,17 +58,64 @@ const Home = () => {
                         }
                     }}
                     className={'mt-auto mb-10'}>
-                    <Link to={'/list'} className={'text-5xl block border-black py-5 w-fit px-10 text-center hover:bg-blue-400 hover:text-white hover:border-blue-300 transition duration-200 ease-linear'}>Я - гість !</Link>
+                    <Link to={'/list'}
+                          className={'text-5xl block border-black py-5 w-fit px-10 text-center hover:bg-blue-400 hover:text-white hover:border-blue-300 transition duration-200 ease-linear'}>Я
+                        - гість !</Link>
                 </motion.div>
             </motion.div>
 
-            <motion.div className={'h-full flex flex-col items-center bg-blue-500'}>
-                <motion.img src={HomeAuthorImageUrl} alt="" className={'max-w-[60%] mt-20'}/>
-                <motion.p className={'text-2xl text-white font-semibold text-center rounded-s shadow-md shadow-white max-w-[70%] px-4 py-2'}>
+            <motion.div
+                initial={{y: '-100%'}}
+                animate={{y: 0, transition: {duration: 0.5}}}
+                exit={{y: '100%', transition: {duration: 0.5}}}
+                className={'h-full flex flex-col items-center bg-blue-500'}>
+                <motion.img
+                    initial={{
+                        y: '-20px',
+                        opacity: 0
+                    }}
+                    animate={{
+                        y: '0px',
+                        opacity: 1,
+                        transition: {
+                            duration: 0.5,
+                            delay: 0.5,
+                        }
+                    }}
+                    src={HomeAuthorImageUrl} alt="" className={'max-w-[60%] mt-20'}/>
+                <motion.p
+                    initial={{
+                        y: '-20px',
+                        opacity: 0
+                    }}
+                    animate={{
+                        y: '0px',
+                        opacity: 1,
+                        transition: {
+                            duration: 0.5,
+                            delay: 0.75,
+                        }
+                    }}
+                    className={'text-2xl text-white font-semibold text-center rounded-s shadow-md shadow-white max-w-[70%] px-4 py-2'}>
                     Ти бажаєш зарекомедувати себе або свою компанію як професіонала у своїй сфері
                 </motion.p>
-                <motion.div className={'mt-auto mb-10'}>
-                    <Link to={'/login'} className={'text-5xl block text-white  py-5 w-fit px-10  border border-white py-5 text-center hover:bg-white hover:text-black transition duration-200 ease-linear'}>Я - автор !</Link>
+                <motion.div
+                    initial={{
+                        x: '20px',
+                        opacity: 0
+                    }}
+                    animate={{
+                        x: '0px',
+                        opacity: 1,
+                        transition: {
+                            duration: 0.5,
+                            delay: 1,
+                        }
+                    }}
+                    className={'mt-auto mb-10'}>
+                    <Link to={'/login'}
+                          className={'text-5xl block text-white  py-5 w-fit px-10  border border-white py-5 text-center hover:bg-white hover:text-black transition duration-200 ease-linear'}>Я
+                        - автор !</Link>
                 </motion.div>
             </motion.div>
         </section>
