@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {motion} from "framer-motion";
 import {getAnimation} from "../utils/utils";
 import {Link} from "react-router-dom";
@@ -17,6 +17,9 @@ const LogIn = () => {
         email: '',
         password: ''
     });
+
+    const emailRef = useRef(null);
+    const passwordRef = useRef(null);
 
     const [modalState, setModalState] = useState({
         isOpen: false,
@@ -60,6 +63,7 @@ const LogIn = () => {
                             type="text"
                             id={'Email'}
                             placeholder={'Email'}
+                            ref={emailRef}
                             className={'shadow border text-3xl rounded w-full py-2 px-3 text-gray-700'}
                             onChange={e => {
                                 setUserInfo(prev => ({
@@ -85,6 +89,7 @@ const LogIn = () => {
                             id={'Password'}
                             className={'shadow border rounded w-full py-2 px-3 text-3xl text-gray-700 mb-3'}
                             placeholder="Пароль"
+                            ref={passwordRef}
                             onChange={e => {
                                 setUserInfo(prev => ({
                                     ...prev,
@@ -102,6 +107,8 @@ const LogIn = () => {
                                         isOpen: true,
                                         text: 'Вхід виконано успішно !'
                                     }))
+                                    passwordRef.current.style.border = '1px solid green';
+                                    emailRef.current.style.border = '1px solid green';
 
                                     setTimeout(() => {
                                         onAuthStateChanged(auth, (user) => {
@@ -112,16 +119,29 @@ const LogIn = () => {
                                     const code = reason.code;
                                     switch (code) {
                                         case 'auth/invalid-email':
+                                            emailRef.current.style.border = '1px solid red';
+                                            passwordRef.current.style.border = '';
                                             handleRequestError('Email введено неправильно !')
                                             return;
                                         case 'auth/invalid-login-credentials':
+                                            emailRef.current.style.border = '1px solid red';
+                                            passwordRef.current.style.border = '1px solid red';
+                                            handleRequestError('Неправильно введені дані користувача !')
+                                            return;
+                                        case 'auth/user-not-found':
+                                            emailRef.current.style.border = '1px solid red';
+                                            passwordRef.current.style.border = '';
                                             handleRequestError('Користувача з таким email не знайдено !')
                                             return;
                                         case 'auth/wrong-password':
                                         case 'auth/missing-password':
+                                            passwordRef.current.style.border = '1px solid red'
+                                            emailRef.current.style.border = '';
                                             handleRequestError('Пароль вказано неправильно !')
                                             return;
                                         case 'auth/too-many-requests':
+                                            passwordRef.current.style.border = '1px solid red';
+                                            emailRef.current.style.border = '1px solid red';
                                             handleRequestError('Забагато запитів, спробуйте трохи пізніше !')
                                             return;
                                     }
