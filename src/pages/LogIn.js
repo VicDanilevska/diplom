@@ -1,9 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {motion} from "framer-motion";
 import {getAnimation} from "../utils/utils";
 import {Link} from "react-router-dom";
+import {useUserContext} from '../context/UserContextProvider';
+import {signInWithEmailAndPassword} from 'firebase/auth';
+import {auth} from '../firebase';
 
 const LogIn = () => {
+
+    const user = useUserContext();
+
+    const [userInfo, setUserInfo] = useState({
+        email: '',
+        password: ''
+    });
+
+    console.log(userInfo)
+
     return (
         <motion.section
             initial={{x: '100%'}}
@@ -27,8 +40,15 @@ const LogIn = () => {
                             initial={'initial'}
                             animate={'animate'}
                             type="text"
-                            id={'Email'} placeholder={'Email'}
-                               className={'shadow border text-3xl rounded w-full py-2 px-3 text-gray-700'}/>
+                            id={'Email'}
+                            placeholder={'Email'}
+                            className={'shadow border text-3xl rounded w-full py-2 px-3 text-gray-700'}
+                            onChange={e => {
+                                setUserInfo(prev => ({
+                                    ...prev,
+                                    email: e.target.value
+                                }));
+                            }}/>
                     </div>
                     <div className={'mb-6'}>
                         <motion.label
@@ -46,10 +66,19 @@ const LogIn = () => {
                             type="password"
                             id={'Password'}
                             className={'shadow border rounded w-full py-2 px-3 text-3xl text-gray-700 mb-3'}
-                            placeholder="Пароль"/>
+                            placeholder="Пароль"
+                            onChange={e => {
+                                setUserInfo(prev => ({
+                                    ...prev,
+                                    password: e.target.value
+                                }));
+                            }}/>
                     </div>
                     <div className={'flex items-center justify-between'}>
                         <button
+                            onClick={async () => {
+                                await signInWithEmailAndPassword(auth, userInfo.email, userInfo.password);
+                            }}
                             className={'relative bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'}
                             type={'button'}>
                             Увійти
