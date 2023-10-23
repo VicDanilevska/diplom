@@ -8,6 +8,7 @@ import {auth} from '../firebase';
 import Modal from '../components/Modal';
 import {AnimatePresence} from "framer-motion";
 import {useNavigate} from "react-router-dom";
+import {FaHome, FaUser} from "react-icons/fa";
 
 const LogIn = () => {
 
@@ -46,6 +47,18 @@ const LogIn = () => {
             </AnimatePresence>
 
             <div className={'w-2/6'}>
+
+                <div>
+                    <Link to={`/list`} className={''}>
+                        <FaHome className={''}></FaHome>
+                    </Link>
+                    {user
+                        &&
+                    <Link to={`/users/${user.uid}`} className={''}>
+                        <FaUser className={''}></FaUser>
+                    </Link>}
+                </div>
+
                 <form className={'bg-white shadow-md rounded px-8 pt-6 pb-8'}>
                     <div className={'mb-4'}>
                         <motion.label
