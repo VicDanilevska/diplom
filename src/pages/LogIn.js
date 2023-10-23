@@ -1,4 +1,7 @@
 import React from 'react';
+import {motion} from "framer-motion";
+import {getAnimation} from "../utils/utils";
+import {Link} from "react-router-dom";
 
 const LogIn = () => {
     return (
@@ -11,32 +14,78 @@ const LogIn = () => {
             <div className={'w-2/6'}>
                 <form className={'bg-white shadow-md rounded px-8 pt-6 pb-8'}>
                     <div className={'mb-4'}>
-                        <label htmlFor="Email" className={'block text-gray-700 text-4xl font-bold mb-2'}>
+                        <motion.label
+                            variants={getAnimation(1)}
+                            initial={'initial'}
+                            animate={'animate'}
+                            htmlFor="Email"
+                            className={'block text-gray-700 text-4xl font-bold mb-2'}>
                             Логін
-                        </label>
-                        <input type="text" id={'Email'} placeholder={'Email'}
+                        </motion.label>
+                        <motion.input
+                            variants={getAnimation(2)}
+                            initial={'initial'}
+                            animate={'animate'}
+                            type="text"
+                            id={'Email'} placeholder={'Email'}
                                className={'shadow border text-3xl rounded w-full py-2 px-3 text-gray-700'}/>
                     </div>
                     <div className={'mb-6'}>
-                        <label htmlFor="Password" className={'block text-gray-700 text-4xl font-bold mb-2'}>
-
-                        </label>
-                        <input type="password" id={'Password'}
-                               className={'shadow border rounded w-full py-2 px-3 text-3xl text-gray-700 mb-3'}
-                               placeholder="Пароль"/>
+                        <motion.label
+                            variants={getAnimation(3)}
+                            initial={'initial'}
+                            animate={'animate'}
+                            htmlFor="Password"
+                            className={'block text-gray-700 text-4xl font-bold mb-2'}>
+                            Пароль
+                        </motion.label>
+                        <motion.input
+                            variants={getAnimation(4)}
+                            initial={'initial'}
+                            animate={'animate'}
+                            type="password"
+                            id={'Password'}
+                            className={'shadow border rounded w-full py-2 px-3 text-3xl text-gray-700 mb-3'}
+                            placeholder="Пароль"/>
                     </div>
                     <div className={'flex items-center justify-between'}>
                         <button
                             className={'relative bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'}
                             type={'button'}>
                             Увійти
-                            <div className={'bg-white absolute w-full h-full left-0 top-0 pointer-events-none'}>
-
-                            </div>
+                            <motion.div
+                                animate={{
+                                    left: '100%',
+                                    width: '0',
+                                    transition: {
+                                        delay: 1,
+                                        duration: 0.5
+                                    }
+                                }}
+                                className={'bg-white absolute w-full h-full left-0 top-0 pointer-events-none'}>
+                            </motion.div>
                         </button>
                         <Link
+                            to={'/signup'}
                             className={'relative transition-all w-min-content before:w-0 before:h-0.5 before:absolute before:-bottom-1 before:left-0 before:bg-black before:transition-all before:duration-500 hover:before:w-full hover:scale-110'}>
-                            Ще не маєте аккаунту ?
+                            {'Ще не маєте аккаунту ?'.split('').map((letter, index) => {
+                                return <motion.span key={index}
+                                                    initial={{
+                                                        y: '-10px',
+                                                        opacity: 0,
+                                                    }}
+                                                    animate={{
+                                                        y: '0px',
+                                                        opacity: 1,
+                                                        transition: {
+                                                            delay: (index + 2) * 0.05,
+                                                            duration: 0.2,
+                                                        }
+                                                    }}
+                                                    className={'inline-block'}>
+                                    {letter === ' ' ? '\u00A0' : letter}
+                                </motion.span>
+                            })}
                         </Link>
 
                     </div>
