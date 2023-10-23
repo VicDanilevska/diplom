@@ -3,19 +3,33 @@ import {motion} from "framer-motion";
 import {getAnimation} from "../utils/utils";
 import {Link} from "react-router-dom";
 import {useUserContext} from '../context/UserContextProvider';
-import {signInWithEmailAndPassword} from 'firebase/auth';
+import {onAuthStateChanged, signInWithEmailAndPassword} from 'firebase/auth';
 import {auth} from '../firebase';
+import Modal from '../components/Modal';
+import {AnimatePresence} from "framer-motion";
+import {useNavigate} from "react-router-dom";
 
 const LogIn = () => {
 
     const user = useUserContext();
-
+    const navigation = useNavigate();
     const [userInfo, setUserInfo] = useState({
         email: '',
         password: ''
     });
 
-    console.log(userInfo)
+    const [modalState, setModalState] = useState({
+        isOpen: false,
+        text: '',
+        isError: true
+    })
+
+    const handleRequestError = (text) => {
+        setModalState(prev => ({
+            ...prev,
+            text: text
+        }))
+    }
 
     return (
         <motion.section
@@ -23,6 +37,10 @@ const LogIn = () => {
             animate={{x: 0, transition: {duration: 0.5}}}
             exit={{x: '-100%', transition: {duration: 0.5}}}
             className={'flex flex-col justify-center items-center h-screen w-full overflow-x-hidden'}>
+
+            <AnimatePresence initial={true} mode={'wait'}>
+                {modalState.isOpen && <Modal text={modalState.text} isError={modalState.isError}/>}
+            </AnimatePresence>
 
             <div className={'w-2/6'}>
                 <form className={'bg-white shadow-md rounded px-8 pt-6 pb-8'}>
@@ -77,7 +95,48 @@ const LogIn = () => {
                     <div className={'flex items-center justify-between'}>
                         <button
                             onClick={async () => {
-                                await signInWithEmailAndPassword(auth, userInfo.email, userInfo.password);
+                                await signInWithEmailAndPassword(auth, userInfo.email, userInfo.password).then(() => {
+                                    setModalState(prev => ({
+                                        ...prev,
+                                        isError: false,
+                                        isOpen: true,
+                                        text: 'Вхід виконано успішно !'
+                                    }))
+
+                                    setTimeout(() => {
+                                        onAuthStateChanged(auth, (user) => {
+                                            navigation(`/users/${user.uid}`)
+                                        })
+                                    }, 1500)
+                                }).catch((reason) => {
+                                    const code = reason.code;
+                                    switch (code) {
+                                        case 'auth/invalid-email':
+                                            handleRequestError('Email введено неправильно !')
+                                            return;
+                                        case 'auth/invalid-login-credentials':
+                                            handleRequestError('Користувача з таким email не знайдено !')
+                                            return;
+                                        case 'auth/wrong-password':
+                                        case 'auth/missing-password':
+                                            handleRequestError('Пароль вказано неправильно !')
+                                            return;
+                                        case 'auth/too-many-requests':
+                                            handleRequestError('Забагато запитів, спробуйте трохи пізніше !')
+                                            return;
+                                    }
+                                }).finally(async () => {
+                                    setModalState(prev => ({
+                                        ...prev,
+                                        isOpen: true
+                                    }));
+                                    setTimeout(() => {
+                                        setModalState(prev => ({
+                                            ...prev,
+                                            isOpen: false
+                                        }));
+                                    }, 2000)
+                                });
                             }}
                             className={'relative bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'}
                             type={'button'}>
