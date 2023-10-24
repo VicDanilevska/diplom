@@ -6,12 +6,32 @@ import useFetch from "../hooks/useFetch";
 import PreLoader from "../components/PreLoader";
 import {motion} from "framer-motion";
 import MarkDown from 'react-markdown';
+import {FaFacebook, FaInstagram, FaTelegram, FaTwitter} from "react-icons/fa";
 
 const Account = () => {
     const user = useUserContext();
     const [currentImage, setCurrentImage] = useState(0);
     const {id} = useParams();
     const {data, error, isFetching} = useFetch(id)
+
+    const mediaIcons = {
+        instagram: {
+            icon: <FaInstagram/>,
+            style: 'bg-gradient-to-r from-amber-600 via-pink-500 to-violet-700',
+        },
+        facebook: {
+            icon: <FaFacebook/>,
+            style: 'bg-gradient-to-r from-blue-200 via-blue-400 to-blue-700',
+        },
+        telegram: {
+            icon: <FaTelegram/>,
+            style: 'bg-gradient-to-r from-blue-200 via-blue-400 to-blue-700',
+        },
+        twitter: {
+            icon: <FaTwitter/>,
+            style: 'bg-gradient-to-r from-blue-200 via-blue-400 to-blue-700',
+        },
+    };
 
     return (
         isFetching ?
