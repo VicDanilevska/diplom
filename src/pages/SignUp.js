@@ -1,21 +1,32 @@
 import React, {useState} from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {AnimatePresence, motion} from 'framer-motion';
 import Modal from "../components/Modal";
 import {FaHome, FaUser} from "react-icons/fa";
 import {useUserContext} from "../context/UserContextProvider";
 import {getAnimation} from "../utils/utils";
+import {createUserWithEmailAndPassword} from 'firebase/auth';
+import {auth} from "../firebase";
 
 const SignUp = () => {
 
     const user = useUserContext();
+    const navigation = useNavigate();
 
 
     const [modalState, setModalState] = useState({
         isOpen: false,
         text: '',
         isError: true
-    })
+    });
+
+    const [userInfo, setUserInfo] = useState({
+        email: '',
+        password: '',
+        rePassword: '',
+    });
+
+
 
     return (
         <motion.section
@@ -60,6 +71,12 @@ const SignUp = () => {
                         type="text"
                         className={"block border border-grey-light w-full p-3 rounded mb-4 text-3xl"}
                         placeholder="Email"
+                        onChange={(e) => {
+                            setUserInfo(prev => ({
+                                ...prev,
+                                email: e.target.value
+                            }))
+                        }}
                     />
 
                     <motion.input
@@ -69,6 +86,12 @@ const SignUp = () => {
                         initial={'initial'}
                         animate={'animate'}
                         placeholder="Пароль"
+                        onChange={(e) => {
+                            setUserInfo(prev => ({
+                                ...prev,
+                                password: e.target.value
+                            }))
+                        }}
                     />
 
                     <motion.input
@@ -78,11 +101,34 @@ const SignUp = () => {
                         initial={'initial'}
                         animate={'animate'}
                         placeholder="Підтвердіть пароль"
+                        onChange={(e) => {
+                            setUserInfo(prev => ({
+                                ...prev,
+                                rePassword: e.target.value
+                            }))
+                        }}
                     />
 
                     <button
                         type={'button'}
                         className={"w-full relative text-center text-2xl py-3 rounded bg-blue-500 text-white hover:bg-blue-600 focus:outline-none my-1"}
+                        onClick={async () => {
+                            if (userInfo.password === userInfo.rePassword)
+                                await createUserWithEmailAndPassword(auth, userInfo.email, userInfo.password);
+                            else {
+                                setModalState(prev => ({
+                                    ...prev,
+                                    text: 'Паролі не співдпадають !',
+                                    isOpen: true,
+                                }))
+                                setTimeout(() => {
+                                    setModalState(prev => ({
+                                        ...prev,
+                                        isOpen: false,
+                                    }))
+                                }, 2000)
+                            }
+                        }}
                     >Створити аккаунт
                         <motion.div
                             className={'bg-white absolute w-[105%] h-full left-0 top-0 pointer-events-none'}
