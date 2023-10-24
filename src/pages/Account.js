@@ -4,11 +4,12 @@ import {Link, useParams} from "react-router-dom";
 import {useUserContext} from "../context/UserContextProvider";
 import useFetch from "../hooks/useFetch";
 import PreLoader from "../components/PreLoader";
+import {motion} from "framer-motion";
 
 const Account = () => {
     const user = useUserContext();
     const {id} = useParams();
-    const {data, error, isFetching} = useFetch()
+    const {data, error, isFetching} = useFetch(id)
 
     return (
         isFetching ?
@@ -30,7 +31,7 @@ const Account = () => {
                 }}>
 
                 <div className={''}>
-                    <img src={} alt="" className={''}/>
+                    <img src={''} alt="" className={''}/>
                     <h1 className={''}></h1>
                 </div>
 
@@ -39,8 +40,8 @@ const Account = () => {
                     <AnimatePresence initial={true} mode={'wait'}>
 
                         <motion.img
-                            key={}
-                            src={}
+                            key={''}
+                            src={''}
                             alt=""
                             className={''}
                         />
