@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import {AnimatePresence, motion} from 'framer-motion';
 import Modal from "../components/Modal";
@@ -26,7 +26,9 @@ const SignUp = () => {
         rePassword: '',
     });
 
-
+    const emailRef = useRef(null);
+    const passwordRef = useRef(null);
+    const rePasswordRef = useRef(null);
 
     return (
         <motion.section
@@ -69,6 +71,7 @@ const SignUp = () => {
                         initial={'initial'}
                         animate={'animate'}
                         type="text"
+                        ref={emailRef}
                         className={"block border border-grey-light w-full p-3 rounded mb-4 text-3xl"}
                         placeholder="Email"
                         onChange={(e) => {
@@ -81,6 +84,7 @@ const SignUp = () => {
 
                     <motion.input
                         type="password"
+                        ref={passwordRef}
                         className={"block border border-grey-light w-full p-3 rounded mb-4 text-3xl"}
                         variants={getAnimation(4)}
                         initial={'initial'}
@@ -96,6 +100,7 @@ const SignUp = () => {
 
                     <motion.input
                         type="password"
+                        ref={rePasswordRef}
                         className={"block border border-grey-light w-full p-3 rounded mb-4 text-3xl"}
                         variants={getAnimation(5)}
                         initial={'initial'}
@@ -114,8 +119,86 @@ const SignUp = () => {
                         className={"w-full relative text-center text-2xl py-3 rounded bg-blue-500 text-white hover:bg-blue-600 focus:outline-none my-1"}
                         onClick={async () => {
                             if (userInfo.password === userInfo.rePassword)
-                                await createUserWithEmailAndPassword(auth, userInfo.email, userInfo.password);
+                                await createUserWithEmailAndPassword(auth, userInfo.email, userInfo.password).then((userCredentials) => {
+                                    setModalState(prev => ({
+                                        ...prev,
+                                        isError: false,
+                                        text: 'Вхід виконано успішно !'
+                                    }))
+                                    passwordRef.current.style.border = '1px solid green';
+                                    emailRef.current.style.border = '1px solid green';
+                                    rePasswordRef.current.style.border = '1px solid green';
+
+                                    setTimeout(() => {
+                                        navigation('/edit');
+                                    }, 1500);
+                                }).catch((reason) => {
+                                    const code = reason.code;
+
+                                    switch (code) {
+                                        case 'auth/invalid-email':
+                                            emailRef.current.style.border = '1px solid red';
+                                            passwordRef.current.style.border = '';
+                                            rePasswordRef.current.style.border = '';
+                                            setModalState(prev => ({
+                                                ...prev,
+                                                text: 'Email введено неправильно !'
+                                            }))
+                                            return;
+                                        case 'auth/email-already-in-use':
+                                            emailRef.current.style.border = '1px solid red';
+                                            passwordRef.current.style.border = '';
+                                            rePasswordRef.current.style.border = '';
+                                            setModalState(prev => ({
+                                                ...prev,
+                                                text: 'Користувача з таким email вже є !'
+                                            }))
+                                            return;
+                                        case 'auth/wrong-password':
+                                        case 'auth/missing-password':
+                                            passwordRef.current.style.border = '1px solid red';
+                                            rePasswordRef.current.style.border = '1px solid red';
+                                            emailRef.current.style.border = '';
+                                            setModalState(prev => ({
+                                                ...prev,
+                                                text: 'Пароль вказано неправильно !'
+                                            }))
+                                            return;
+                                        case 'auth/weak-password':
+                                            passwordRef.current.style.border = '1px solid red';
+                                            rePasswordRef.current.style.border = '1px solid red';
+                                            emailRef.current.style.border = '';
+                                            setModalState(prev => ({
+                                                ...prev,
+                                                text: 'Слабкий пароль (мінімум 6 символів) !'
+                                            }))
+                                            return;
+                                        case 'auth/too-many-requests':
+                                            passwordRef.current.style.border = '1px solid red';
+                                            emailRef.current.style.border = '1px solid red';
+                                            rePasswordRef.current.style.border = '1px solid red';
+                                            setModalState(prev => ({
+                                                ...prev,
+                                                text: 'Забагато запитів, спробуйте трохи пізніше !'
+                                            }))
+                                            return;
+                                    }
+                                }).finally(async () => {
+                                    setModalState(prev => ({
+                                        ...prev,
+                                        isOpen: true
+                                    }))
+                                    setTimeout(() => {
+                                        setModalState(prev => ({
+                                            ...prev,
+                                            isOpen: false
+                                        }))
+                                    }, 2000)
+                                });
                             else {
+                                emailRef.current.style.border = '';
+                                passwordRef.current.style.border = '1px solid red';
+                                rePasswordRef.current.style.border = '1px solid red';
                                 setModalState(prev => ({
                                     ...prev,
                                     text: 'Паролі не співдпадають !',
