@@ -5,6 +5,7 @@ import {useUserContext} from "../context/UserContextProvider";
 import useFetch from "../hooks/useFetch";
 import PreLoader from "../components/PreLoader";
 import {motion} from "framer-motion";
+import MarkDown from 'react-markdown';
 
 const Account = () => {
     const user = useUserContext();
@@ -31,8 +32,8 @@ const Account = () => {
                 }}>
 
                 <div className={''}>
-                    <img src={''} alt="" className={''}/>
-                    <h1 className={''}></h1>
+                    <img src={data.logoUrl} alt="" className={''}/>
+                    <h1 className={''}>{data.name}</h1>
                 </div>
 
                 <div className={''}>
@@ -62,15 +63,19 @@ const Account = () => {
                         сторінку</Link>
                 }
                 <motion.div
-
                     className={''}>
                     <h1 className={''}>Про нас</h1>
-
+                    <MarkDown className={''}>
+                        {data.fullDescription}
+                    </MarkDown>
                 </motion.div>
 
                 <motion.div
                     className={''}>
                     <h1 className={''}>Короткий опис</h1>
+                    <MarkDown className={''}>
+                        {data.shortDescription}
+                    </MarkDown>
                 </motion.div>
 
 
