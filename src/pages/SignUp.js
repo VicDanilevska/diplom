@@ -43,28 +43,28 @@ const SignUp = () => {
                         </Link>}
                 </div>
 
-                <div className="">
+                <div className={'bg-white px-6 py-8 rounded shadow-md text-black'}>
                     <motion.h1
-                        className="">
+                        className={"mb-8 text-4xl font-bold text-center"}>
                         Реєстрація
                     </motion.h1>
 
                     <motion.input
                         type="text"
-                        className=""/>
+                        className={"block border border-grey-light w-full p-3 rounded mb-4 text-3xl"}/>
 
                     <motion.input
                         type="password"
-                        className=""
+                        className={"block border border-grey-light w-full p-3 rounded mb-4 text-3xl"}
                     />
                     <motion.input
                         type="password"
-                        className=""
+                        className={"block border border-grey-light w-full p-3 rounded mb-4 text-3xl"}
                     />
 
                     <button
                         type={'button'}
-                        className=""
+                        className={"w-full relative text-center text-2xl py-3 rounded bg-blue-500 text-white hover:bg-blue-600 focus:outline-none my-1"}
                     >Створити аккаунт
                         <motion.div className={''}></motion.div>
                     </button>
