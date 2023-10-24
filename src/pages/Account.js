@@ -1,11 +1,19 @@
 import React from 'react';
 import {AnimatePresence} from "framer-motion";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useUserContext} from "../context/UserContextProvider";
+import useFetch from "../hooks/useFetch";
+import PreLoader from "../components/PreLoader";
 
 const Account = () => {
     const user = useUserContext();
+    const {id} = useParams();
+    const {data, error, isFetching} = useFetch()
+
     return (
+        isFetching ?
+        <PreLoader></PreLoader>
+            :
         <motion.section
             exit={{x: '-100%', transition: {duration: 0.5}}}
             className={`flex flex-row justify-end h-screen`}>
