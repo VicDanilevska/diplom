@@ -7,6 +7,7 @@ import PreLoader from "../components/PreLoader";
 import {motion} from "framer-motion";
 import MarkDown from 'react-markdown';
 import {FaFacebook, FaInstagram, FaTelegram, FaTwitter} from "react-icons/fa";
+import MediaLink from "../components/MediaLink";
 
 const Account = () => {
     const user = useUserContext();
@@ -95,7 +96,12 @@ const Account = () => {
                 </div>
 
                 <div className={''}>
-
+                    {Object.entries(mediaIcons).map(([key, {icon, style}], index) => {
+                        if (data.media[key] !== '') {
+                            return <MediaLink key={index} className={mediaIcons[key].style}
+                                              icon={mediaIcons[key].icon} href={data.media[key]}/> ;
+                        }
+                    })}
                 </div>
             </motion.div>
             <div className={''}>
