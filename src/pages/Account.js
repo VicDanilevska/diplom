@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {AnimatePresence} from "framer-motion";
 import {Link, useParams} from "react-router-dom";
 import {useUserContext} from "../context/UserContextProvider";
@@ -9,6 +9,7 @@ import MarkDown from 'react-markdown';
 
 const Account = () => {
     const user = useUserContext();
+    const [currentImage, setCurrentImage] = useState(0);
     const {id} = useParams();
     const {data, error, isFetching} = useFetch(id)
 
@@ -37,17 +38,40 @@ const Account = () => {
                 </div>
 
                 <div className={''}>
-
+                    {
+                        data.imagesUrl.length !== 1
+                        &&
+                        <button onClick={(e) => {
+                            setCurrentImage(prev => prev === 0 ? data.imagesUrl.length - 1 : prev - 1)
+                            e.target.disabled = 'true';
+                            setTimeout(() => {
+                                e.target.disabled = '';
+                            }, 500);
+                        }
+                        } className={''}>{'<'}</button>
+                    }
                     <AnimatePresence initial={true} mode={'wait'}>
 
                         <motion.img
-                            key={''}
-                            src={''}
+                            key={currentImage}
+                            src={data.imagesUrl[currentImage]}
                             alt=""
                             className={''}
                         />
                     </AnimatePresence>
 
+                    {
+                        data.imagesUrl.length !== 1
+                        &&
+                        <button onClick={(e) => {
+                            setCurrentImage(prev => prev === data.imagesUrl.length - 1 ? 0 : prev + 1)
+                            e.target.disabled = 'true';
+                            setTimeout(() => {
+                                e.target.disabled = '';
+                            }, 500);
+                        }
+                        } className={''}>{'>'}</button>
+                    }
                 </div>
 
                 <div className={''}>
