@@ -53,12 +53,12 @@ const Account = () => {
                     }
                 }}>
 
-                <div className={''}>
-                    <img src={data.logoUrl} alt="" className={''}/>
-                    <h1 className={''}>{data.name}</h1>
+                <div className={'flex items-center justify-center'}>
+                    <img src={data.logoUrl} alt="" className={'w-1/5'}/>
+                    <h1 className={'text-5xl ml-3'}>{data.name}</h1>
                 </div>
 
-                <div className={''}>
+                <div className={'text-3xl flex flex-row justify-around px-2 items-center h-96'}>
                     {
                         data.imagesUrl.length !== 1
                         &&
@@ -69,7 +69,7 @@ const Account = () => {
                                 e.target.disabled = '';
                             }, 500);
                         }
-                        } className={''}>{'<'}</button>
+                        } className={'hover:shadow-md hover:shadow-blue-200 rounded-md py-2 px-4'}>{'<'}</button>
                     }
                     <AnimatePresence initial={true} mode={'wait'}>
 
@@ -77,7 +77,7 @@ const Account = () => {
                             key={currentImage}
                             src={data.imagesUrl[currentImage]}
                             alt=""
-                            className={''}
+                            className={'w-3/4 max-h-full'}
                         />
                     </AnimatePresence>
 
@@ -91,11 +91,11 @@ const Account = () => {
                                 e.target.disabled = '';
                             }, 500);
                         }
-                        } className={''}>{'>'}</button>
+                        } className={'hover:shadow-md hover:shadow-blue-200 rounded-md py-2 px-4'}>{'>'}</button>
                     }
                 </div>
 
-                <div className={''}>
+                <div className={'mx-auto flex gap-3 w-7/12 justify-center items-center'}>
                     {Object.entries(mediaIcons).map(([key, {icon, style}], index) => {
                         if (data.media[key] !== '') {
                             return <MediaLink key={index} className={mediaIcons[key].style}
@@ -104,26 +104,26 @@ const Account = () => {
                     })}
                 </div>
             </motion.div>
-            <div className={''}>
+            <div className={'h-full w-3/5 py-4 px-5'}>
                 {
                     (user && id === user.uid)
                     &&
                     <Link to={'/edit'}
-                          className={''}>Редагувати
+                          className={'text-4xl hover:scale-105 block text-black mx-auto py-5 w-fit px-10 border border-black py-5 text-center hover:border-blue-500 hover:bg-blue-400 hover:text-white transition duration-200 ease-linear'}>Редагувати
                         сторінку</Link>
                 }
                 <motion.div
-                    className={''}>
-                    <h1 className={''}>Про нас</h1>
-                    <MarkDown className={''}>
+                    className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
+                    <h1 className={'text-3xl text-center'}>Про нас</h1>
+                    <MarkDown className={'text-2xl prose'}>
                         {data.fullDescription}
                     </MarkDown>
                 </motion.div>
 
                 <motion.div
-                    className={''}>
-                    <h1 className={''}>Короткий опис</h1>
-                    <MarkDown className={''}>
+                    className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
+                    <h1 className={'text-3xl text-center'}>Короткий опис</h1>
+                    <MarkDown className={'text-2xl prose'}>
                         {data.shortDescription}
                     </MarkDown>
                 </motion.div>
@@ -131,9 +131,9 @@ const Account = () => {
 
                 <motion.div
 
-                    className={''}>
-                    <h1 className={''}>Наші послуги</h1>
-                    <div className={''}>
+                    className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
+                    <h1 className={'text-3xl text-center'}>Наші послуги</h1>
+                    <div className={'flex gap-3 flex-wrap justify-center'}>
 
                     </div>
                 </motion.div>
