@@ -4,6 +4,7 @@ import {AnimatePresence, motion} from 'framer-motion';
 import Modal from "../components/Modal";
 import {FaHome, FaUser} from "react-icons/fa";
 import {useUserContext} from "../context/UserContextProvider";
+import {getAnimation} from "../utils/utils";
 
 const SignUp = () => {
 
@@ -45,28 +46,56 @@ const SignUp = () => {
 
                 <div className={'bg-white px-6 py-8 rounded shadow-md text-black'}>
                     <motion.h1
+                        variants={getAnimation(1)}
+                        initial={'initial'}
+                        animate={'animate'}
                         className={"mb-8 text-4xl font-bold text-center"}>
                         Реєстрація
                     </motion.h1>
 
                     <motion.input
+                        variants={getAnimation(3)}
+                        initial={'initial'}
+                        animate={'animate'}
                         type="text"
-                        className={"block border border-grey-light w-full p-3 rounded mb-4 text-3xl"}/>
+                        className={"block border border-grey-light w-full p-3 rounded mb-4 text-3xl"}
+                        placeholder="Email"
+                    />
 
                     <motion.input
                         type="password"
                         className={"block border border-grey-light w-full p-3 rounded mb-4 text-3xl"}
+                        variants={getAnimation(4)}
+                        initial={'initial'}
+                        animate={'animate'}
+                        placeholder="Пароль"
                     />
+
                     <motion.input
                         type="password"
                         className={"block border border-grey-light w-full p-3 rounded mb-4 text-3xl"}
+                        variants={getAnimation(5)}
+                        initial={'initial'}
+                        animate={'animate'}
+                        placeholder="Підтвердіть пароль"
                     />
 
                     <button
                         type={'button'}
                         className={"w-full relative text-center text-2xl py-3 rounded bg-blue-500 text-white hover:bg-blue-600 focus:outline-none my-1"}
                     >Створити аккаунт
-                        <motion.div className={''}></motion.div>
+                        <motion.div
+                            className={'bg-white absolute w-[105%] h-full left-0 top-0 pointer-events-none'}
+                            animate={{
+                                left: '100%',
+                                width: 0,
+                                transition: {
+                                    delay: 1,
+                                    duration: 0.5
+                                },
+                            }}>
+
+                        </motion.div>
                     </button>
 
                 </div>
