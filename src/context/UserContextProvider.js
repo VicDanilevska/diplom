@@ -1,7 +1,7 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import {onAuthStateChanged} from 'firebase/auth';
 import {auth, db, servicesCollection} from '../firebase';
-import {getDoc, doc, query, where, getDocs, onSnapshot} from 'firebase/firestore';
+import {getDoc, doc, query, where, getDocs, onSnapshot, collection} from 'firebase/firestore';
 import PreLoader from "../components/PreLoader";
 
 const UserContext = createContext(null);
@@ -32,15 +32,22 @@ const UserContextProvider = ({children}) => {
                 setUser(user);
             }
         })
-    }, [])
 
-    useEffect(() => {
-        if (user){
+
+        if (user) {
+
             onSnapshot(doc(db, 'users', user.uid), doc => {
+                setUser((prev) => ({
+                    ...prev, data: {
+                        ...(prev.data),
+                        ...(doc?.data())
+                    }
+                }))
+            })
+
+            onSnapshot(collection(db, 'services'), () => {
                 const id = user.uid;
                 const serviceQ = query(servicesCollection, where('owner', '==', id));
-
-                setUser(() => ({...user, data: doc?.data()}))
 
                 getDocs(serviceQ).then(({docs}) => {
                     setUser((prev) => ({
