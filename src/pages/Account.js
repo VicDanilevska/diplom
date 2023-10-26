@@ -187,7 +187,18 @@ const Account = () => {
                     className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
                     <h1 className={'text-3xl text-center'}>Наші послуги</h1>
                     <div className={'flex gap-3 flex-wrap justify-center'}>
-
+                        {data.services.length ?
+                            data.services.map((service, index) => {
+                                return <div key={index} className={'rounded-md border border-blue-400 px-4 py-2 w-64'}>
+                                    <img src={service.imageUrl} alt="" className={'w-full'}/>
+                                    <h2>{service.title}</h2>
+                                    <p>{service.description}</p>
+                                    <span className={'float-right'}>{service.price}</span>
+                                </div>
+                            })
+                            :
+                            <h1>Тут поки що нічого немає</h1>
+                        }
                     </div>
                 </motion.div>
 
