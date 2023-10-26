@@ -1,13 +1,29 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {motion} from "framer-motion";
 import {useUserContext} from "../context/UserContextProvider";
 import {Link} from "react-router-dom";
-import {FaCloudUploadAlt, FaPlusCircle} from "react-icons/fa";
+import {FaCloudUploadAlt, FaPlusCircle, FaTrash} from "react-icons/fa";
 
 const Edit = () => {
 
     const user = useUserContext();
     const userData = user.data;
+
+    const [newLogo, setNewLogo] = useState(userData.logoUrl);
+    const [currentImages, setCurrentImages] = useState(userData.imagesUrl)
+    const [currentServices, setCurrentServices] = useState(userData.services);
+    const [newMedia, setNewMedia] = useState(userData.media);
+    const [newFullDescription, setNewFullDescription] = useState(userData.fullDescription)
+    const [newShortDescription, setNewShortDescription] = useState(userData.shortDescription)
+    const [newName, setNewName] = useState(userData.name);
+    const [currentImagesToDelete, setCurrentImagesToDelete] = useState([]);
+    const [newImages, setNewImages] = useState([]);
+    const [logoFile, setLogoFile] = useState(null);
+
+    const imagesInputRef = useRef(null);
+    const logoFileUploadRef = useRef(null);
+
+
 
     return <motion.div
         exit={{x: '-100%', transition: {duration: 0.5}}}
@@ -30,6 +46,10 @@ const Edit = () => {
                     <h1 className={'text-5xl text-justify'}>Додайте або змініть назву</h1>
                     <input type="text"
                            className={'w-full text-3xl rounded-s my-3 border border-blue-300 active:border-blue-400'}
+                           value={newName}
+                           onChange={e => {
+                               setNewName(e.target.value)
+                           }}
                     />
                 </div>
 
@@ -37,16 +57,45 @@ const Edit = () => {
                     <h1 className={'text-4xl text-center'}>Додайте або змініть логотип</h1>
                     <div className={'flex flex-col justify-center items-center w-1/3 my-3'}>
                         <h1 className={'text-2xl'}>Старий логотип</h1>
-                        <img alt="" className={'w-4/5'}/>
+                        <img alt="" src={userData.logoUrl} className={'w-4/5'}/>
                     </div>
                     <div className={'flex gap-3 px-2 h-60 justify-center'}>
+                        <div>
                             <h1 className={'text-2xl text-center'}>Новий логотип</h1>
-                            <img  alt="" className={'h-4/5 max-w-full'}/>
-                        <div className={"relative p-4 grid place-content-center cursor-pointer bg-blue-50 text-blue-500 rounded-lg hover:bg-blue-100 border-4 border-dashed border-blue-100 hover:border-blue-500 transition-colors"}>
+                            <img src={newLogo}  alt="" className={'h-4/5 max-w-full'}/>
+                        </div>
+
+                        <div
+                            className={"relative p-4 grid place-content-center cursor-pointer bg-blue-50 text-blue-500 rounded-lg hover:bg-blue-100 border-4 border-dashed border-blue-100 hover:border-blue-500 transition-colors"}
+                            onClick={() => {
+                                logoFileUploadRef.current.click();
+                            }
+                            }
+                            onDrop={e => {
+                                e.preventDefault();
+                                const file = e.dataTransfer.files[0];
+                                const imageUrl = URL.createObjectURL(file);
+                                setNewLogo(imageUrl);
+                                setLogoFile(file);
+
+                            }
+                            }
+                            onDragOver={e => {
+                                e.preventDefault();
+                            }
+                            }
+                        >
                             <div className="flex flex-col items-center">
                                 <FaCloudUploadAlt className="w-10 h-10"/>
                                 <span className={'text-center'}>Оберіть або  перетягніть логотип сюди</span>
-                                <input type="file" accept={'image/png, image/jpeg'} hidden/>
+                                <input ref={logoFileUploadRef} onChange={e => {
+                                    e.preventDefault();
+                                    const file = e.target.files[0];
+                                    const imageUrl = URL.createObjectURL(file);
+                                    setNewLogo(imageUrl);
+                                    setLogoFile(file);
+                                }
+                                } type="file" accept={'image/png, image/jpeg'} hidden/>
                             </div>
                         </div>
                     </div>
@@ -58,11 +107,69 @@ const Edit = () => {
 
             <div className={'text-3xl flex flex-col justify-center items-center'}>
 
-                <div className={'relative mt-3 w-4/5 p-4 grid place-content-center cursor-pointer bg-blue-50 text-blue-500 rounded-lg hover:bg-blue-100 border-4 border-dashed border-blue-100 hover:border-blue-500 transition-colors'}>
+                {currentImages.map((imageUrl, index) => {
+                    return <div key={index} className={'my-2 relative grid place-items-center group cursor-pointer'}
+                                onClick={() => {
+                                    setCurrentImagesToDelete(prev => [...prev, imageUrl]);
+                                    setCurrentImages(prev => prev.filter(item => item !== imageUrl))
+                                }
+                                }
+                    >
+                        <motion.img src={imageUrl} alt="" initial={{opacity: 0}}
+                                    animate={{opacity: 1, transition: {duration: 0.5}}}/>
+                        <div
+                            className={'bg-black absolute opacity-0 group-hover:opacity-20 w-full h-full transition-all duration-150'}></div>
+                        <FaTrash className={'opacity-0 group-hover:opacity-100 text-red-600 place-self-center text-4xl absolute transition-all duration-150'}/>
+                    </div>
+                })}
+
+                {newImages.map((image, index) => {
+                    return <div key={index} className={'my-2 relative grid place-items-center group cursor-pointer'}
+                                onClick={() => {
+                                    setNewImages(prevState => {
+                                        return [...(prevState.filter(item => item.url !== image.url))];
+                                    })
+                                }
+                                }
+                    >
+                        <motion.img src={image.url} alt="" initial={{opacity: 0}}
+                                    animate={{opacity: 1, transition: {duration: 0.5}}}/>
+                        <div
+                            className={'bg-black absolute opacity-0 group-hover:opacity-20 w-full h-full transition-all duration-150'}></div>
+                        <FaTrash
+                            className={'opacity-0 group-hover:opacity-100 text-red-600 place-self-center text-4xl absolute transition-all duration-150'}></FaTrash>
+                    </div>
+                })}
+
+                <div
+                    onClick={() => {
+                        imagesInputRef.current.click();
+                    }
+                    }
+                    onDrop={e => {
+                        e.preventDefault();
+                        const file = e.dataTransfer.files[0];
+                        const imageUrl = URL.createObjectURL(file);
+                        setNewImages(prev => [...prev, {url: imageUrl, file}]);
+                    }
+                    }
+                    onDragOver={e => {
+                        e.preventDefault();
+                    }
+                    }
+                    className={'relative mt-3 w-4/5 p-4 grid place-content-center cursor-pointer bg-blue-50 text-blue-500 rounded-lg hover:bg-blue-100 border-4 border-dashed border-blue-100 hover:border-blue-500 transition-colors'}>
                     <div className="flex flex-col items-center">
                         <FaCloudUploadAlt className="w-10 h-10"/>
                         <span className={'text-center'}>Оберіть або  перетягніть фотографію сюди</span>
-                        <input multiple={true} type="file" accept={'image/png, image/jpeg'} hidden/>
+                        <input
+                            ref={imagesInputRef} multiple={true} onChange={e => {
+                            e.preventDefault();
+                            const file = e.target.files[0];
+                            const imageUrl = URL.createObjectURL(file);
+                            setNewImages(prev => [...prev, {url: imageUrl, file}]);
+                        }
+                        }
+                            type="file" accept={'image/png, image/jpeg'} hidden/>
                     </div>
                 </div>
             </div>
@@ -71,22 +178,46 @@ const Edit = () => {
 
                 <h1>Instagram</h1>
                 <div className={'rounded-lg px-2 py-2 bg-gradient-to-r from-amber-600 via-pink-500 to-blue-700'}>
-                    <input type="text" className={'rounded-sm text-3xl'}/>
+                    <input
+                        type="text"
+                        value={newMedia.instagram} onChange={e => {
+                            setNewMedia(prev => ({...prev, instagram: e.target.value}))
+                        }
+                        }
+                        className={'rounded-sm text-3xl'}/>
                 </div>
 
                 <h1>Twitter</h1>
                 <div className={'rounded-lg px-2 py-2 bg-gradient-to-r from-blue-200 via-blue-400 to-blue-700'}>
-                    <input type="text" className={'rounded-sm text-3xl'}/>
+                    <input
+                        type="text"
+                        value={newMedia.twitter} onChange={e => {
+                            setNewMedia(prev => ({...prev, twitter: e.target.value}))
+                        }
+                        }
+                        className={'rounded-sm text-3xl'}/>
                 </div>
 
                 <h1>Facebook</h1>
                 <div className={'rounded-lg px-2 py-2 bg-gradient-to-r from-blue-200 via-blue-400 to-blue-700'}>
-                    <input type="text" className={'rounded-sm text-3xl'}/>
+                    <input
+                        type="text"
+                        value={newMedia.facebook} onChange={e => {
+                            setNewMedia(prev => ({...prev, facebook: e.target.value}))
+                        }
+                        }
+                        className={'rounded-sm text-3xl'}/>
                 </div>
 
                 <h1>Telegram</h1>
                 <div className={'rounded-lg px-2 py-2 bg-gradient-to-r from-blue-200 via-blue-400 to-blue-700'}>
-                    <input type="text" className={'rounded-sm text-3xl'}/>
+                    <input
+                        type="text"
+                        value={newMedia.telegram} onChange={e => {
+                            setNewMedia(prev => ({...prev, telegram: e.target.value}))
+                        }
+                        }
+                        className={'rounded-sm text-3xl'}/>
                 </div>
 
             </div>
@@ -120,7 +251,12 @@ const Edit = () => {
                 className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
                 <h1 className={'text-4xl mb-2'}>Додайте або змініть повний опис</h1>
                 <h2 className={'text-xl mb-5 text-blue-500'}>Підтримується MD-формат</h2>
-                <textarea className={'border border-blue-400 rounded-sm w-full px-4 py-2 text-2xl h-60'}/>
+                <textarea
+                    onChange={({target}) => {
+                        setNewFullDescription(target.value)
+                    }}
+                    value={newFullDescription}
+                    className={'border border-blue-400 rounded-sm w-full px-4 py-2 text-2xl h-60'}/>
             </motion.div>
 
             <motion.div
@@ -139,7 +275,12 @@ const Edit = () => {
                 className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
                 <h1 className={'text-4xl mb-2'}>Додайте або змініть короткий опис</h1>
                 <h2 className={'text-xl mb-5 text-blue-500'}>Підтримується MD-формат</h2>
-                <textarea className={'border border-blue-400 rounded-sm w-full px-4 py-2 text-2xl h-60'}/>
+                <textarea
+                    onChange={({target}) => {
+                        setNewShortDescription(target.value)
+                    }}
+                    value={newShortDescription}
+                    className={'border border-blue-400 rounded-sm w-full px-4 py-2 text-2xl h-60'}/>
             </motion.div>
 
 
