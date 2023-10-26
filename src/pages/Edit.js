@@ -13,7 +13,17 @@ const Edit = () => {
         exit={{x: '-100%', transition: {duration: 0.5}}}
         className={`flex flex-row justify-end relative`}>
 
-        <motion.div className={'w-2/5 flex flex-col gap-5 h-full py-4 shadow-md shadow-blue-400 fixed overflow-y-scroll left-0 top-0'}>
+        <motion.div
+            initial={{
+                y: '100%'
+            }}
+            animate={{
+                y: '0',
+                transition: {
+                    duration: 0.5
+                }
+            }}
+            className={'w-2/5 flex flex-col gap-5 h-full py-4 shadow-md shadow-blue-400 fixed overflow-y-scroll left-0 top-0'}>
 
             <div className={'flex flex-col items-center justify-center'}>
                 <div className={'shadow-blue-200 shadow-md w-full px-3'}>
@@ -95,20 +105,57 @@ const Edit = () => {
                 </Link>
             </div>
 
-            <motion.div className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
+            <motion.div
+                initial={{
+                    y: '200%',
+                    opacity: 0,
+                }}
+                animate={{
+                    y: '0',
+                    opacity: 1,
+                    transition: {
+                        duration: 0.5,
+                    }
+                }}
+                className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
                 <h1 className={'text-4xl mb-2'}>Додайте або змініть повний опис</h1>
                 <h2 className={'text-xl mb-5 text-blue-500'}>Підтримується MD-формат</h2>
                 <textarea className={'border border-blue-400 rounded-sm w-full px-4 py-2 text-2xl h-60'}/>
             </motion.div>
 
-            <motion.div className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
+            <motion.div
+                initial={{
+                    y: '200%',
+                    opacity: 0,
+                }}
+                animate={{
+                    y: '0',
+                    opacity: 1,
+                    transition: {
+                        duration: 0.5,
+                        delay: 0.25
+                    }
+                }}
+                className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
                 <h1 className={'text-4xl mb-2'}>Додайте або змініть короткий опис</h1>
                 <h2 className={'text-xl mb-5 text-blue-500'}>Підтримується MD-формат</h2>
                 <textarea className={'border border-blue-400 rounded-sm w-full px-4 py-2 text-2xl h-60'}/>
             </motion.div>
 
 
-            <motion.div className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
+            <motion.div
+                initial={{
+                    y: '200%',
+                    opacity: 0,
+                }}
+                animate={{
+                    y: '0',
+                    opacity: 1,
+                    transition: {
+                        duration: 0.5,
+                        delay: 0.5
+                    }
+                }} className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
                 <h1 className={'text-4xl mb-2'}>Додайте або змініть послуги</h1>
                 <div className={'flex gap-3 flex-wrap justify-center '}>
                     <div className={'cursor-pointer rounded-md border border-blue-400 px-4 py-2 w-64 grid group hover:border-blue-600 hover:bg-blue-50 transition-all duration-250'}>
