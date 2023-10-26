@@ -26,7 +26,7 @@ const UserContextProvider = ({children}) => {
 
     return (
         <UserContext.Provider value={user}>
-            {children}
+            {user !== undefined ? children : <PreLoader></PreLoader>}
         </UserContext.Provider>
     );
 };
