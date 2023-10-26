@@ -1,10 +1,31 @@
 import React, {useRef, useState} from 'react';
 import {motion} from "framer-motion";
 import {useUserContext} from "../context/UserContextProvider";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {FaCloudUploadAlt, FaPlusCircle, FaTrash} from "react-icons/fa";
 import NewServiceForm from "../components/NewServiceForm";
 import Service from "../components/Service";
+import {
+    setDoc,
+    doc,
+    addDoc,
+    deleteDoc
+} from 'firebase/firestore';
+
+import {
+    servicesCollection,
+    db,
+    storage
+} from '../firebase'
+
+import {
+    getDownloadURL,
+    ref,
+    uploadBytes,
+    getMetadata,
+    deleteObject
+} from 'firebase/storage'
+import Modal from "../components/Modal";
 
 const Edit = () => {
 
@@ -23,10 +44,13 @@ const Edit = () => {
     const [newServices, setNewServices] = useState([]);
     const [currentServicesToDelete, setCurrentServicesToDelete] = useState([]);
     const [isNewServiceFormVisible, setIsNewServiceFormVisible] = useState(false);
+    const [isDataProcessing, setIsDataProcessing] = useState(false);
 
     const imagesInputRef = useRef(null);
     const logoFileUploadRef = useRef(null);
     const addNewServiceRef = useRef(null);
+
+    const navigation = useNavigate();
 
     const handleNewServiceSubmit = ({title, description, price, image}) => {
         addNewServiceRef.current.style.display = 'grid';
@@ -52,6 +76,12 @@ const Edit = () => {
     return <motion.div
         exit={{x: '-100%', transition: {duration: 0.5}}}
         className={`flex flex-row justify-end relative`}>
+
+        {isDataProcessing &&
+            <div className={'absolute w-64 h-fit left-1/2 -translate-x-1/2 z-30'}>
+                <Modal text={'Обробляємо дані'} isError={false}/>
+            </div>
+        }
 
         <motion.div
             initial={{
@@ -250,7 +280,74 @@ const Edit = () => {
         <div className={'h-full w-3/5 py-4 px-5'}>
 
             <div className={'flex justify-center items-center py-3 w-full top-0'}>
-                <button className={'rounded-sm border border-green-700 bg-green-500 text-black text-4xl px-8 py-4 mx-5'}>
+                <button
+                    onClick={async () => {
+
+                        currentImagesToDelete.forEach(url => {
+                            const imageRef = ref(storage, url);
+
+                            getMetadata(imageRef).then(({ref}) => {
+                                deleteObject(ref);
+                            })
+                        })
+
+                        const urls = await Promise.all(newImages.map(async ({file}) => {
+                            const path = '' + user.uid + '/' + file.name;
+                            const response = await uploadBytes(ref(storage, path), file);
+                            const storageRef = response.ref;
+                            return await getDownloadURL(storageRef);
+                        }));
+
+                        let logoUrl = newLogo;
+
+                        if (logoFile !== null) {
+                            const logoPath = '' + user.uid + '/' + logoFile.name;
+                            const response = await uploadBytes(ref(storage, logoPath), logoFile);
+                            const logoStorageRef = response.ref;
+                            logoUrl = await getDownloadURL(logoStorageRef);
+                        }
+
+
+                        const newUserData = {
+                            fullDescription: newFullDescription,
+                            imagesUrl: [...currentImages, ...urls],
+                            logoUrl: logoUrl,
+                            media: newMedia,
+                            name: newName,
+                            shortDescription: newShortDescription
+                        }
+
+                        setDoc(doc(db, 'users', user.uid), newUserData);
+
+                        newServices.forEach(async (service) => {
+                            const imageFile = service.image.file;
+                            const imagePath = '' + user.uid + '/' + imageFile.name;
+                            const response = await uploadBytes(ref(storage, imagePath), imageFile)
+                            const imageStorageRef = response.ref;
+                            const imageUrl = await getDownloadURL(imageStorageRef);
+
+                            addDoc(servicesCollection, {
+                                title: service.title,
+                                description: service.description,
+                                price: service.price,
+                                owner: service.owner,
+                                imageUrl: imageUrl
+                            })
+                        })
+
+                        currentServicesToDelete.forEach(id => {
+                            deleteDoc(doc(db, 'services', id));
+                        })
+
+                        setIsDataProcessing(true);
+
+                        setTimeout(() => {
+                            setIsDataProcessing(false);
+                            navigation(`/users/${user.uid}`)
+                        }, 1000);
+                    }
+                    }
+                    className={'rounded-sm border border-green-700 bg-green-500 text-black text-4xl px-8 py-4 mx-5'}>
                     Зберегти зміни
                 </button>
                 <Link
