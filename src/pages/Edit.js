@@ -3,12 +3,13 @@ import {motion} from "framer-motion";
 import {useUserContext} from "../context/UserContextProvider";
 import {Link} from "react-router-dom";
 import {FaCloudUploadAlt, FaPlusCircle, FaTrash} from "react-icons/fa";
+import NewServiceForm from "../components/NewServiceForm";
+import Service from "../components/Service";
 
 const Edit = () => {
 
     const user = useUserContext();
     const userData = user.data;
-
     const [newLogo, setNewLogo] = useState(userData.logoUrl);
     const [currentImages, setCurrentImages] = useState(userData.imagesUrl)
     const [currentServices, setCurrentServices] = useState(userData.services);
@@ -19,11 +20,34 @@ const Edit = () => {
     const [currentImagesToDelete, setCurrentImagesToDelete] = useState([]);
     const [newImages, setNewImages] = useState([]);
     const [logoFile, setLogoFile] = useState(null);
+    const [newServices, setNewServices] = useState([]);
+    const [currentServicesToDelete, setCurrentServicesToDelete] = useState([]);
+    const [isNewServiceFormVisible, setIsNewServiceFormVisible] = useState(false);
 
     const imagesInputRef = useRef(null);
     const logoFileUploadRef = useRef(null);
+    const addNewServiceRef = useRef(null);
 
+    const handleNewServiceSubmit = ({title, description, price, image}) => {
+        addNewServiceRef.current.style.display = 'grid';
+        setIsNewServiceFormVisible(false);
+        setNewServices(prev => ([...prev,
+            ({title, description, price, image, owner: user.uid, id: Math.random().toString(36).substring(2)})]))
+    }
 
+    const handleNewServiceDecline = () => {
+        addNewServiceRef.current.style.display = 'grid';
+        setIsNewServiceFormVisible(false);
+    }
+
+    const handleCurrentServiceDelete = (id) => {
+        setCurrentServicesToDelete(prev => [...prev, id]);
+        setCurrentServices(currentServices.filter(service => service.id !== id));
+    }
+
+    const handleNewServiceDelete = (id) => {
+        setNewServices(newServices.filter(service => service.id !== id));
+    }
 
     return <motion.div
         exit={{x: '-100%', transition: {duration: 0.5}}}
@@ -299,7 +323,26 @@ const Edit = () => {
                 }} className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
                 <h1 className={'text-4xl mb-2'}>Додайте або змініть послуги</h1>
                 <div className={'flex gap-3 flex-wrap justify-center '}>
-                    <div className={'cursor-pointer rounded-md border border-blue-400 px-4 py-2 w-64 grid group hover:border-blue-600 hover:bg-blue-50 transition-all duration-250'}>
+
+                    {currentServices.map((service, index) => {
+                        return <Service key={index} service={service} handleDelete={handleCurrentServiceDelete}></Service>
+                    })}
+
+                    {newServices.map((service, index) => {
+                        return <Service key={index} service={service} handleDelete={handleNewServiceDelete}></Service>
+                    })}
+
+                    <NewServiceForm handleSubmit={handleNewServiceSubmit} handleDecline={handleNewServiceDecline}
+                                    isVisible={isNewServiceFormVisible}></NewServiceForm>
+
+                    <div
+                        ref={addNewServiceRef}
+                        onClick={e => {
+                            addNewServiceRef.current.style.display = 'none';
+                            setIsNewServiceFormVisible(true);
+                        }
+                        }
+                        className={'cursor-pointer rounded-md border border-blue-400 px-4 py-2 w-64 grid group hover:border-blue-600 hover:bg-blue-50 transition-all duration-250'}>
                         <FaPlusCircle className={'text-blue-500 place-self-center h-28 w-28 group-hover:text-blue-600 transition-all duration-250'}/>
                     </div>
                 </div>
