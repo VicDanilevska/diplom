@@ -77,6 +77,24 @@ const Account = () => {
                             key={currentImage}
                             src={data.imagesUrl[currentImage]}
                             alt=""
+                            initial={{
+                                x: '20px',
+                                opacity: 0
+                            }}
+                            animate={{
+                                x: '0px',
+                                opacity: 1,
+                                transition: {
+                                    duration: 0.5
+                                }
+                            }}
+                            exit={{
+                                x: '-20px',
+                                opacity: 0,
+                                transition: {
+                                    duration: 0.25
+                                }
+                            }}
                             className={'w-3/4 max-h-full'}
                         />
                     </AnimatePresence>
@@ -113,7 +131,18 @@ const Account = () => {
                         сторінку</Link>
                 }
                 <motion.div
-                    className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
+                    className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}
+                    initial={{
+                        y: '200%',
+                        opacity: 0,
+                    }}
+                    animate={{
+                        y: '0',
+                        opacity: 1,
+                        transition: {
+                            duration: 0.5,
+                        }
+                    }}>
                     <h1 className={'text-3xl text-center'}>Про нас</h1>
                     <MarkDown className={'text-2xl prose'}>
                         {data.fullDescription}
@@ -121,7 +150,20 @@ const Account = () => {
                 </motion.div>
 
                 <motion.div
-                    className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
+                    className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}
+                    initial={{
+                        y: '200%',
+                        opacity: 0,
+                    }}
+                    animate={{
+                        y: '0',
+                        opacity: 1,
+                        transition: {
+                            duration: 0.5,
+                            delay: 0.25
+                        }
+                    }}
+                >
                     <h1 className={'text-3xl text-center'}>Короткий опис</h1>
                     <MarkDown className={'text-2xl prose'}>
                         {data.shortDescription}
@@ -130,7 +172,18 @@ const Account = () => {
 
 
                 <motion.div
-
+                    initial={{
+                        y: '200%',
+                        opacity: 0,
+                    }}
+                    animate={{
+                        y: '0',
+                        opacity: 1,
+                        transition: {
+                            duration: 0.5,
+                            delay: 0.5
+                        }
+                    }}
                     className={'py-4 px-2 shadow-sm shadow-blue-200 my-5'}>
                     <h1 className={'text-3xl text-center'}>Наші послуги</h1>
                     <div className={'flex gap-3 flex-wrap justify-center'}>
