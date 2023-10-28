@@ -27,7 +27,7 @@ const CompanyCard = ({shortDescription, id, name, logoUrl, imagesUrl}) => {
             viewport={{once: true}}
         >
             <Link to={`/users/${id}`} className={'block shadow-md shadow-green-300 w-full border border-blue-400 px-4 py-2 h-96'}>
-                <div className={'flex h-1/4 px-4 py-1 items-center h-fit border-b border-b-blue-300'}>
+                <div className={'flex h-1/4 px-4 py-1 items-center border-b border-b-blue-300'}>
                     {logoUrl !== ''
                         ?
                         <img src={logoUrl} className={'max-h-full block mr-2'}/>
