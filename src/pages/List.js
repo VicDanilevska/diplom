@@ -1,5 +1,5 @@
 import React from 'react';
-import {motion} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 import {AiOutlineSearch} from 'react-icons/ai';
 import useFetchAll from "../hooks/useFetchAll";
 import PreLoader from "../components/PreLoader";
@@ -28,8 +28,12 @@ const List = () => {
                 </div>
 
                 <div className={'w-3/4 flex flex-col gap-5 py-5'}>
-                    {users.map(user => <CompanyCard key={user.id} {...user}/>)}
+                    <AnimatePresence initial={true} mode={"wait"}>
+                        {users.map(user => <CompanyCard key={user.id} {...user}/>)}
+                    </AnimatePresence>
                 </div>
+
+
             </motion.section>
     );
 };
