@@ -4,22 +4,39 @@ import {AiOutlineSearch} from 'react-icons/ai';
 import useFetchAll from "../hooks/useFetchAll";
 import PreLoader from "../components/PreLoader";
 import CompanyCard from "../components/CompanyCard";
+import {useUserContext} from "../context/UserContextProvider";
+import {Link} from "react-router-dom";
+import {CgLogIn} from 'react-icons/cg';
+import {FaUser} from 'react-icons/fa';
+
 
 const List = () => {
 
     const {users, isFetching} = useFetchAll();
     const [searchBarQuery, setSearchBarQuery] = useState('');
+
+    const user = useUserContext();
+
     return (
         isFetching ?
             <PreLoader/>
             :
             <motion.section
-                initial={{x: '100%'}}
-                animate={{x: 0, transition: {duration: 0.5}}}
-                exit={{x: '-100%', transition: {duration: 0.5}}}
-                className={'flex flex-col items-center h-screen w-full overflow-x-hidden'}>
+                className={'flex flex-col items-center h-screen w-full overflow-x-hidden relative'}>
 
-                <div className={'w-3/4 mt-20 relative flex items-center'}>
+                {
+                    user ?
+                        <Link className={'transition-all duration-250 fixed rounded-full text-black hover:border-blue-700 hover:bg-blue-400 hover:text-white p-5 border border-black top-10 right-10'} to={`/users/${user.uid}`}>
+                            <FaUser className={'w-10 h-10'}/>
+                        </Link>
+                    :
+                        <Link className={'transition-all duration-250 fixed rounded-full text-black hover:border-blue-700 hover:bg-blue-400 hover:text-white p-5 border border-black top-10 right-10'} to={'/login'}>
+                            <CgLogIn className={'w-10 h-10'}/>
+                        </Link>
+                }
+
+
+                <div className={'w-3/4 mt-20 relative flex items-center fixed'}>
                     <input
                         onChange={e => {
                             setSearchBarQuery(e.target.value.toLowerCase())
