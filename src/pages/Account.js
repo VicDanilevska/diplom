@@ -76,7 +76,7 @@ const Account = () => {
                 </div>
 
 
-                <div className={'flex items-center justify-center'}>
+                <div className={'flex items-center justify-center px-2'}>
                     {data.logoUrl !== ''
                         ?
                         <img src={data.logoUrl} alt="" className={'w-1/5'}/>
