@@ -17,6 +17,13 @@ const CompanyCard = ({shortDescription, id, name, logoUrl, imagesUrl}) => {
                     duration: 0.5
                 }
             }}
+            exit={{
+                x: '50%',
+                opacity: 0,
+                transition: {
+                    duration: 0.5
+                }
+            }}
             viewport={{once: true}}
         >
             <Link to={`/users/${id}`} className={'block shadow-md shadow-green-300 w-full border border-blue-400 px-4 py-2 h-96'}>
