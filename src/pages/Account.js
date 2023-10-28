@@ -6,7 +6,7 @@ import useFetch from "../hooks/useFetch";
 import PreLoader from "../components/PreLoader";
 import {motion} from "framer-motion";
 import MarkDown from 'react-markdown';
-import {FaFacebook, FaInstagram, FaTelegram, FaTwitter} from "react-icons/fa";
+import {FaFacebook, FaHome, FaInstagram, FaTelegram, FaTwitter} from "react-icons/fa";
 import MediaLink from "../components/MediaLink";
 
 const Account = () => {
@@ -42,7 +42,7 @@ const Account = () => {
             exit={{x: '-100%', transition: {duration: 0.5}}}
             className={`flex flex-row justify-end h-screen`}>
             <motion.div
-                className={'w-2/5 flex flex-col gap-5 h-full py-4 shadow-md shadow-blue-400 fixed left-0 top-0'}
+                className={'w-2/5 flex flex-col gap-5 h-full shadow-md shadow-blue-400 fixed left-0 top-0'}
                 initial={{
                     y: '100%'
                 }}
@@ -52,6 +52,10 @@ const Account = () => {
                         duration: 0.5
                     }
                 }}>
+
+                <Link to={`/list`} className={'transition-all duration-250 group hover:bg-blue-600 border border-t-blue-500 w-full flex justify-center items-center px-4'}>
+                    <FaHome className={'transition-all duration-250 group-hover:text-white text-6xl text-blue-700'}></FaHome>
+                </Link>
 
                 <div className={'flex items-center justify-center'}>
                     <img src={data.logoUrl} alt="" className={'w-1/5'}/>
@@ -121,6 +125,8 @@ const Account = () => {
                         }
                     })}
                 </div>
+
+
             </motion.div>
             <div className={'h-full w-3/5 py-4 px-5'}>
                 {
