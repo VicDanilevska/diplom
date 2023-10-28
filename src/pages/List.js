@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {motion} from "framer-motion";
 import {AiOutlineSearch} from 'react-icons/ai';
 import useFetchAll from "../hooks/useFetchAll";
 import PreLoader from "../components/PreLoader";
+import CompanyCard from "../components/CompanyCard";
 
 const List = () => {
 
@@ -26,6 +27,9 @@ const List = () => {
                     <AiOutlineSearch className={'absolute right-5 text-2xl text-blue-700 rounded-full'}/>
                 </div>
 
+                <div className={'w-3/4 flex flex-col gap-5 py-5'}>
+                    {users.map(user => <CompanyCard key={user.id} {...user}/>)}
+                </div>
             </motion.section>
     );
 };
