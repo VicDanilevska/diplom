@@ -5,7 +5,7 @@ import Markdown from "react-markdown";
 const CompanyCard = ({shortDescription, id, name, logoUrl, imagesUrl}) => {
     return (
         <Link to={`/users/${id}`} className={'block shadow-md shadow-green-300 w-full border border-blue-400 px-4 py-2 h-96'}>
-            <div className={'flex h-1/4 px-4 py-1 items-center h-fit'}>
+            <div className={'flex h-1/4 px-4 py-1 items-center h-fit border-b border-b-blue-300'}>
                 {logoUrl !== ''
                     ?
                     <img src={logoUrl} className={'max-h-full block mr-2'}/>
@@ -16,8 +16,7 @@ const CompanyCard = ({shortDescription, id, name, logoUrl, imagesUrl}) => {
                 }
                 <h1 className={'grow text-3xl overflow-clip'}>{name}</h1>
             </div>
-            <div className={'h-0.5 w-full border border-blue-200 rounded-full my-2'}></div>
-            <div className={'h-3/4 flex'}>
+            <div className={'h-3/4 flex pt-1'}>
                 <div className={'grow flex justify-center items-center w-1/2'}>
                     {imagesUrl.length
                         ?
