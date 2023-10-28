@@ -61,7 +61,7 @@ const Account = () => {
                         <FaHome className={'transition-all duration-250 group-hover:text-white text-6xl text-blue-700'}></FaHome>
                     </Link>
 
-                    {user.uid === id &&
+                    {user?.uid === id &&
                         <Link
                             to={'/login'}
                             onClick={() => {
@@ -77,63 +77,82 @@ const Account = () => {
 
 
                 <div className={'flex items-center justify-center'}>
-                    <img src={data.logoUrl} alt="" className={'w-1/5'}/>
+                    {data.logoUrl !== ''
+                        ?
+                        <img src={data.logoUrl} alt="" className={'w-1/5'}/>
+                        :
+                        <div className={'min-w-1/5 bg-blue-600 p-2 flex justify-center items-center rounded-xl'}>
+                            <h1 className={'text-white text-xl text-center'}>Зображення немає</h1>
+                        </div>
+                    }
                     <h1 className={'text-5xl ml-3 overflow-clip'}>{data.name}</h1>
                 </div>
 
                 <div className={'text-3xl flex flex-row justify-around px-2 items-center h-96'}>
-                    {
-                        data.imagesUrl.length !== 1
-                        &&
-                        <button onClick={(e) => {
-                            setCurrentImage(prev => prev === 0 ? data.imagesUrl.length - 1 : prev - 1)
-                            e.target.disabled = 'true';
-                            setTimeout(() => {
-                                e.target.disabled = '';
-                            }, 500);
-                        }
-                        } className={'hover:shadow-md hover:shadow-blue-200 rounded-md py-2 px-4'}>{'<'}</button>
-                    }
-                    <AnimatePresence initial={true} mode={'wait'}>
 
-                        <motion.img
-                            key={currentImage}
-                            src={data.imagesUrl[currentImage]}
-                            alt=""
-                            initial={{
-                                x: '20px',
-                                opacity: 0
-                            }}
-                            animate={{
-                                x: '0px',
-                                opacity: 1,
-                                transition: {
-                                    duration: 0.5
+                    {data.imagesUrl.length
+                        ?
+                        <>
+                            {
+                                data.imagesUrl.length > 1
+                                &&
+                                <button onClick={(e) => {
+                                    setCurrentImage(prev => prev === 0 ? data.imagesUrl.length - 1 : prev - 1)
+                                    e.target.disabled = 'true';
+                                    setTimeout(() => {
+                                        e.target.disabled = '';
+                                    }, 500);
                                 }
-                            }}
-                            exit={{
-                                x: '-20px',
-                                opacity: 0,
-                                transition: {
-                                    duration: 0.25
-                                }
-                            }}
-                            className={'w-3/4 max-h-full'}
-                        />
-                    </AnimatePresence>
+                                } className={'hover:shadow-md hover:shadow-blue-200 rounded-md py-2 px-4'}>{'<'}</button>
+                            }
+                            <AnimatePresence initial={true} mode={'wait'}>
 
-                    {
-                        data.imagesUrl.length !== 1
-                        &&
-                        <button onClick={(e) => {
-                            setCurrentImage(prev => prev === data.imagesUrl.length - 1 ? 0 : prev + 1)
-                            e.target.disabled = 'true';
-                            setTimeout(() => {
-                                e.target.disabled = '';
-                            }, 500);
-                        }
-                        } className={'hover:shadow-md hover:shadow-blue-200 rounded-md py-2 px-4'}>{'>'}</button>
+                                <motion.img
+                                    key={currentImage}
+                                    src={data.imagesUrl[currentImage]}
+                                    alt=""
+                                    initial={{
+                                        x: '20px',
+                                        opacity: 0
+                                    }}
+                                    animate={{
+                                        x: '0px',
+                                        opacity: 1,
+                                        transition: {
+                                            duration: 0.5
+                                        }
+                                    }}
+                                    exit={{
+                                        x: '-20px',
+                                        opacity: 0,
+                                        transition: {
+                                            duration: 0.25
+                                        }
+                                    }}
+                                    className={'w-3/4 max-h-full'}
+                                />
+                            </AnimatePresence>
+
+                            {
+                                data.imagesUrl.length > 1
+                                &&
+                                <button onClick={(e) => {
+                                    setCurrentImage(prev => prev === data.imagesUrl.length - 1 ? 0 : prev + 1)
+                                    e.target.disabled = 'true';
+                                    setTimeout(() => {
+                                        e.target.disabled = '';
+                                    }, 500);
+                                }
+                                } className={'hover:shadow-md hover:shadow-blue-200 rounded-md py-2 px-4'}>{'>'}</button>
+                            }
+                        </>
+                        :
+                        <div className={'w-3/4 h-full bg-blue-600 p-2 flex justify-center items-center rounded-xl'}>
+                            <h1 className={'text-white text-3xl text-center'}>Зображень немає</h1>
+                        </div>
                     }
+
+
                 </div>
 
                 <div className={'mx-auto flex gap-3 w-7/12 justify-center items-center'}>
