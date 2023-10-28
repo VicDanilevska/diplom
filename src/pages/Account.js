@@ -61,21 +61,24 @@ const Account = () => {
                         <FaHome className={'transition-all duration-250 group-hover:text-white text-6xl text-blue-700'}></FaHome>
                     </Link>
 
-                    <Link
-                        to={'/login'}
-                        onClick={() => {
-                            signOut(auth);
-                        }
-                        }
-                        className={'flex grow transition-all duration-250 group hover:bg-blue-600 border border-t-blue-500 flex justify-center items-center px-4'}>
-                        <FiLogOut className={'transition-all duration-250 group-hover:text-white text-6xl text-blue-700'}/>
-                    </Link>
+                    {user.uid === id &&
+                        <Link
+                            to={'/login'}
+                            onClick={() => {
+                                signOut(auth);
+                            }
+                            }
+                            className={'flex grow transition-all duration-250 group hover:bg-blue-600 border border-t-blue-500 flex justify-center items-center px-4'}>
+                            <FiLogOut className={'transition-all duration-250 group-hover:text-white text-6xl text-blue-700'}/>
+                        </Link>
+                    }
+
                 </div>
 
 
                 <div className={'flex items-center justify-center'}>
                     <img src={data.logoUrl} alt="" className={'w-1/5'}/>
-                    <h1 className={'text-5xl ml-3'}>{data.name}</h1>
+                    <h1 className={'text-5xl ml-3 overflow-clip'}>{data.name}</h1>
                 </div>
 
                 <div className={'text-3xl flex flex-row justify-around px-2 items-center h-96'}>
