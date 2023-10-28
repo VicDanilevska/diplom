@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import {motion} from "framer-motion";
 import {useUserContext} from "../context/UserContextProvider";
 import {Link, useNavigate} from "react-router-dom";
-import {FaCloudUploadAlt, FaPlusCircle, FaTrash} from "react-icons/fa";
+import {FaCloudUploadAlt, FaPlusCircle, FaTrash, FaSave, FaBackward} from "react-icons/fa";
 import NewServiceForm from "../components/NewServiceForm";
 import Service from "../components/Service";
 import {
@@ -15,7 +15,7 @@ import {
 import {
     servicesCollection,
     db,
-    storage
+    storage,
 } from '../firebase'
 
 import {
@@ -93,7 +93,7 @@ const Edit = () => {
                     duration: 0.5
                 }
             }}
-            className={'w-2/5 flex flex-col gap-5 h-full py-4 shadow-md shadow-blue-400 fixed overflow-y-scroll left-0 top-0'}>
+            className={'w-2/5 flex flex-col gap-5 h-full pb-4 shadow-md shadow-blue-400 fixed overflow-y-scroll left-0 top-0'}>
 
             <div className={'flex flex-col items-center justify-center'}>
                 <div className={'shadow-blue-200 shadow-md w-full px-3'}>
@@ -347,13 +347,15 @@ const Edit = () => {
                         }, 1000);
                     }
                     }
-                    className={'rounded-sm border border-green-700 bg-green-500 text-black text-4xl px-8 py-4 mx-5'}>
+                    className={'rounded-sm flex items-center justify-center transition-all duration-250 hover:bg-blue-600 hover:text-white border border-blue-500 text-4xl px-8 py-4 mx-5'}>
                     Зберегти зміни
+                    <FaSave className={'ml-4'}></FaSave>
                 </button>
                 <Link
-                    className={'rounded-sm border border-red-700 bg-red-500 text-black text-4xl px-8 py-4 mx-5'}
+                    className={'rounded-sm flex items-center justify-center transition-all duration-250 hover:bg-blue-600 hover:text-white border border-blue-500 text-4xl px-8 py-4 mx-5'}
                     to={`/users/${user.uid}`}>
                     Повернутись
+                    <FaBackward className={'ml-4'}></FaBackward>
                 </Link>
             </div>
 
