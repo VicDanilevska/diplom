@@ -20,7 +20,6 @@ const storage = getStorage(app);
 const usersCollection = collection(db, 'users');
 const servicesCollection = collection(db, 'services');
 
-const commonUserAvatarImageUrl = 'https://firebasestorage.googleapis.com/v0/b/my-diplom-10e3f.appspot.com/o/CommonFiles%2FCommonAvatarImage.png?alt=media&token=c30ce89f-52a8-4e17-8f35-91bec45f2b2c&_gl=1*bu90zt*_ga*MTE1MDIyNjY4OC4xNjk2ODc1MjQy*_ga_CW55HF8NVT*MTY5ODE0NTI1MC4xMy4xLjE2OTgxNDUzODQuNDYuMC4w';
 
 
-export {auth, usersCollection, commonUserAvatarImageUrl, db, servicesCollection, storage};
+export {auth, usersCollection, db, servicesCollection, storage};
