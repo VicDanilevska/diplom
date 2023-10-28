@@ -8,6 +8,9 @@ import {motion} from "framer-motion";
 import MarkDown from 'react-markdown';
 import {FaFacebook, FaHome, FaInstagram, FaTelegram, FaTwitter} from "react-icons/fa";
 import MediaLink from "../components/MediaLink";
+import {signOut} from "firebase/auth";
+import {auth} from "../firebase";
+import {FiLogOut} from "react-icons/fi";
 
 const Account = () => {
     const user = useUserContext();
@@ -53,9 +56,22 @@ const Account = () => {
                     }
                 }}>
 
-                <Link to={`/list`} className={'transition-all duration-250 group hover:bg-blue-600 border border-t-blue-500 w-full flex justify-center items-center px-4'}>
-                    <FaHome className={'transition-all duration-250 group-hover:text-white text-6xl text-blue-700'}></FaHome>
-                </Link>
+                <div className={'shadow-blue-200 shadow-md w-full h-fit flex mb-1'}>
+                    <Link to={`/list`} className={'flex grow transition-all duration-250 group hover:bg-blue-600 border border-t-blue-500 flex justify-center items-center px-4'}>
+                        <FaHome className={'transition-all duration-250 group-hover:text-white text-6xl text-blue-700'}></FaHome>
+                    </Link>
+
+                    <Link
+                        to={'/login'}
+                        onClick={() => {
+                            signOut(auth);
+                        }
+                        }
+                        className={'flex grow transition-all duration-250 group hover:bg-blue-600 border border-t-blue-500 flex justify-center items-center px-4'}>
+                        <FiLogOut className={'transition-all duration-250 group-hover:text-white text-6xl text-blue-700'}/>
+                    </Link>
+                </div>
+
 
                 <div className={'flex items-center justify-center'}>
                     <img src={data.logoUrl} alt="" className={'w-1/5'}/>
