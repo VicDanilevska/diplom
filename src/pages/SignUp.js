@@ -6,7 +6,7 @@ import {FaHome, FaUser} from "react-icons/fa";
 import {useUserContext} from "../context/UserContextProvider";
 import {getAnimation} from "../utils/utils";
 import {createUserWithEmailAndPassword} from 'firebase/auth';
-import {auth, usersCollection, commonUserAvatarImageUrl} from "../firebase";
+import {auth, usersCollection} from "../firebase";
 import {setDoc, doc} from 'firebase/firestore'
 
 const SignUp = () => {
@@ -134,9 +134,9 @@ const SignUp = () => {
                                         email: userInfo.email,
                                         fullDescription: 'Тут поки нічого немає',
                                         shortDescription: 'Тут поки нічого немає',
-                                        imagesUrl: [commonUserAvatarImageUrl],
+                                        imagesUrl: [],
                                         name: "Ім'я не обрано",
-                                        logoUrl: commonUserAvatarImageUrl,
+                                        logoUrl: '',
                                         media: {
                                             instagram: '',
                                             twitter: '',
