@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {AnimatePresence, motion} from "framer-motion";
 import {AiOutlineSearch} from 'react-icons/ai';
 import useFetchAll from "../hooks/useFetchAll";
@@ -8,7 +8,7 @@ import CompanyCard from "../components/CompanyCard";
 const List = () => {
 
     const {users, isFetching} = useFetchAll();
-
+    const [searchBarQuery, setSearchBarQuery] = useState('');
     return (
         isFetching ?
             <PreLoader/>
@@ -21,15 +21,18 @@ const List = () => {
 
                 <div className={'w-3/4 mt-20 relative flex items-center'}>
                     <input
+                        onChange={e => {
+                            setSearchBarQuery(e.target.value.toLowerCase())
+                        }}
                         type="text"
-                        className={'pl-5 pr-14 py-2 w-full rounded-full shadow-inner shadow-blue-600 text-4xl border border-blue-400'}
+                        className={'pl-5 pr-14 py-2 leading-4 w-full rounded-full shadow-inner shadow-blue-600 text-4xl border border-blue-400'}
                         placeholder={'Введіть назву компанії'}/>
                     <AiOutlineSearch className={'absolute right-5 text-2xl text-blue-700 rounded-full'}/>
                 </div>
 
                 <div className={'w-3/4 flex flex-col gap-5 py-5'}>
-                    <AnimatePresence initial={true} mode={"wait"}>
-                        {users.map(user => <CompanyCard key={user.id} {...user}/>)}
+                    <AnimatePresence>
+                        {users.filter(user => user.name.toLowerCase().includes(searchBarQuery)).map(user => <CompanyCard key={user.id} {...user}/>)}
                     </AnimatePresence>
                 </div>
 
